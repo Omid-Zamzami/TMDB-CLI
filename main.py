@@ -65,7 +65,36 @@ def fetch_movies(movie_type, access_token):
     except ValueError:
         print("Error: Failed to parse JSON response from server.")
         return []
-            
+
+
+def display_movies(movies_list):
+    if not movies_list:
+        print("No movies found.")
+        return
+    
+    print("\nDisplaying movies:\n")
+
+    for index, item in enumerate(movies_list, start=1):
+        title = item.get('title') or 'N/A'
+        release_date = item.get('release_date') or 'N/A'
+        vote_average = item.get('vote_average')
+        vote_count = item.get('vote_count')
+        overview = item.get('overview') or 'N/A'
+        popularity = item.get('popularity')
+
+        if vote_average is None:
+            vote_average = "N/A"
+        if vote_count is None:
+            vote_count = "N/A"
+        if popularity is None:
+            popularity = "N/A"
+
+        print(f"{index}. Title: {title}")
+        print(f"    Release date: {release_date}")
+        print(f"    Average vote: {vote_average}")
+        print(f"    Vote count: {vote_count}")
+        print(f"    Popularity: {popularity}")
+        print(f"    Overview: {overview}")
 
 
 def tmdb():
@@ -79,7 +108,8 @@ def tmdb():
         print("Error: TMDB API token was not found.")
         return
 
-    movies = fetch_movies(arg.type, api_token)
+    movies_data = fetch_movies(arg.type, api_token)
+    display_movies(movies_data)
 
 
 if __name__ == "__main__":
